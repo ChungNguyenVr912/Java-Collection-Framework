@@ -1,7 +1,5 @@
 package setup_binary_search_tree;
 
-import java.util.*;
-
 public class TestBST {
     public static void main(String[] args) {
         BST<String> tree = new BST<>();
@@ -16,6 +14,7 @@ public class TestBST {
         tree.inorder();
         System.out.println("The number of nodes is: " + tree.getSize());
         System.out.println("Postorder (sorted): ");
+        tree.postorder();
         tree.preorder();
     }
 }
