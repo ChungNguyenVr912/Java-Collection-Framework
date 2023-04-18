@@ -11,6 +11,7 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
         for (int i = 0; i < objects.length; i++)
             insert(objects[i]);
     }
+
     @Override
     public boolean insert(E e) {
         if (root == null)
@@ -36,6 +37,7 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
         size++;
         return true;
     }
+
     protected TreeNode<E> createNewNode(E e) {
         return new TreeNode<>(e);
     }
@@ -49,6 +51,7 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
     public void inorder() {
         inorder(root);
     }
+
     protected void inorder(TreeNode<E> root) {
         if (root == null) return;
         inorder(root.left);
@@ -62,7 +65,7 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
     }
 
     protected void postorder(TreeNode<E> root) {
-        if (root == null){
+        if (root == null) {
             return;
         }
         postorder(root.left);
@@ -74,8 +77,73 @@ public class BST<E extends Comparable<E>> extends AbstractTree<E> {
     public void preorder() {
         preorder(root);
     }
-    protected void preorder(TreeNode<E> root){
-        if (root == null){
+
+    @Override
+    public boolean remove(E e) {
+        TreeNode<E> parent = null;
+        TreeNode<E> current = root;
+        boolean isLeftChild = true;
+        if (e.equals(root.element)) {
+            parent = root;
+            replace(parent,current,isLeftChild);
+            root = root.left;
+        }
+        while (current != null) {
+            if (e.equals(current.element)) {
+                break;
+            } else if (e.compareTo(current.element) < 0) {
+                parent = current;
+                current = current.left;
+                isLeftChild = true;
+            } else {
+                parent = current;
+                current = current.right;
+                isLeftChild = false;
+            }
+        }
+        if (current == null) {
+            return false;
+        } else {
+            replace(parent, current, isLeftChild);
+            return true;
+        }
+    }
+
+    private void replace(TreeNode<E> parent, TreeNode<E> current, boolean isLeftChild) {
+        if (current.left == null) {
+            if (isLeftChild) {
+                parent.left = current.right;
+            } else {
+                parent.right = current.right;
+            }
+        } else {
+            TreeNode<E> rightMost = current.left;
+            TreeNode<E> parentOfRightMost = current;
+            while (rightMost.right != null) {
+                parentOfRightMost = rightMost;
+                rightMost = rightMost.right;
+            }
+            if (!parentOfRightMost.equals(current)) {
+                parentOfRightMost.right = rightMost.left;
+                rightMost.left = current.left;
+                if (isLeftChild) {
+                    parent.left = rightMost;
+                } else {
+                    parent.right = rightMost;
+                }
+            }else {
+                if (isLeftChild) {
+                    parent.left = rightMost;
+                } else {
+                    parent.right = rightMost;
+                }
+                rightMost.right = current.right;
+            }
+        }
+    }
+
+    protected void preorder(TreeNode<E> root) {
+        if (root == null) {
             return;
         }
         System.out.println(root.element + " ");

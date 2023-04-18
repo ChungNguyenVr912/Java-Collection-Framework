@@ -10,11 +10,16 @@ public class TestBST {
         tree.insert("Jones");
         tree.insert("Peter");
         tree.insert("Daniel");
+        tree.insert("Bani");
+        tree.insert("Fan");
+        tree.insert("Emi");
         System.out.println("Inorder (sorted): ");
         tree.inorder();
         System.out.println("The number of nodes is: " + tree.getSize());
-        System.out.println("Postorder (sorted): ");
-        tree.postorder();
-        tree.preorder();
+//        System.out.println("Postorder: ");
+//        tree.postorder();
+//        tree.preorder();
+        tree.remove("Emi");
+        tree.inorder();
     }
 }
